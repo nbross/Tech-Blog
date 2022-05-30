@@ -15,6 +15,15 @@ router.get("/", (req, res) => {
         });
 });
 
+router.get("/login", (req, res) => {
+    if (req.session.loggedIn) {
+        res.redirect("/");
+        return;
+    }
+
+    res.render("login");
+});
+
 router.get("/post/:id", (req, res) => {
     Post.findByPk(req.params.id, {
         include: [
@@ -25,27 +34,26 @@ router.get("/post/:id", (req, res) => {
             },
         ],
     })
-        .then((dbPostData) => {
-            if (dbPostData) {
-                const post = dbPostData.get({ plain: true });
-
-                res.render("single-post", { post });
-            } else {
-                res.status(404).end();
+        .then(dbPostData => {
+            if (!dbPostData) {
+                res.status(404).json({ message: 'No post found with this id' });
+                return;
             }
+            // serialize the data
+            const post = dbPostData.get({ plain: true })
+
+            // pass data to template
+            res.render('single-post', {
+                post,
+                loggedIn: req.session.loggedIn,
+                username: req.session.username
+            });
         })
-        .catch((err) => {
+        .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 });
 
-router.get("/login", (req, res) => {
-    if (req.session.loggedIn) {
-        res.redirect("/");
-        return;
-    }
-
-    res.render("login");
-});
 
 module.exports = router;
