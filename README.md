@@ -52,10 +52,11 @@ The following necessary dependencies must be installed to run the application pr
 ## Run App
 The following commands are needed to run the app: source db/schema.sql(in sql shell), create an .env and import your info, npm start.
 
-
+## Problem!!!
+The site really work tried a few stuff to fix it but kind of ran out time. The page loads and you can login, but nothing happens after. I've code all the view and routes to have the site let the users to create posts and comment 
 ## Screenshot
 
-![Tech-Blog]()
+![Tech-Blog](/assets/images/2022-05-30.png)
 
 ## Repo link
 
